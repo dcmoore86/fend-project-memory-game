@@ -11,10 +11,13 @@ const symbols = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-
 const fragment = document.createDocumentFragment();
 const numberOfMoves = document.querySelector(".moves");
 const container = document.querySelector(".container");
+const timer = document.querySelector(".timer");
 let paragraph = document.createElement("p");
 let openList = [];
 let moveCounter = 0;
 let cards = [];
+let startTimer;
+let seconds = 0;
 /*
 * Display the cards on the page
 *   - shuffle the list of cards using the provided "shuffle" method below
@@ -23,12 +26,14 @@ let cards = [];
 */
 
 function startGame() {
-  container.className = 'container';
-  paragraph.remove();
+  clearInterval(startTimer);
+  paragraph.setAttribute('style', 'z-index: -1;');
   moveCounter = 0;
+  seconds = 0;
   cards = [];
   openList = [];
   deck.innerHTML = "";
+  timer.innerHTML = "";
   numberOfMoves.innerHTML = moveCounter;
   stars.children[0].removeAttribute("style");
   stars.children[1].removeAttribute("style");
@@ -76,19 +81,25 @@ startGame();
 */
 
 function cardClicked(evt) {
- openCard(evt);
- updateStars();
- console.log(document.getElementsByClassName("match").length + " " + deck.childElementCount);
- if (document.getElementsByClassName("match").length + 1 === deck.childElementCount) {
-   finalScore(moveCounter);
- }
+  if (seconds === 0) {
+    startTimer = setInterval(function() {
+      timer.innerHTML = ++seconds;
+    }, 1000);
+  }
+  openCard(evt);
+  updateStars();
+  console.log(document.getElementsByClassName("match").length + " " + deck.childElementCount);
+  if (document.getElementsByClassName("match").length + 1 === deck.childElementCount) {
+    clearInterval(startTimer);
+    finalScore(moveCounter);
+  }
 }
 
 function openCard(evt) {
- if (evt.target.className === "card") {
-   evt.target.classList.add("open", "show")
-   addCardToOpenList(evt);
- }
+  if (evt.target.className === "card") {
+    evt.target.classList.add("open", "show")
+    addCardToOpenList(evt);
+  }
 }
 
 function addCardToOpenList(evt) {
@@ -145,14 +156,16 @@ function finalScore(counter) {
       numberOfStars--;
     }
   }
+  mins = Math.floor(seconds/60);
+  secs = seconds % 60;
   paragraph = document.createElement("p");
-  paragraph.innerHTML = `Congratulations you've won! with ${counter} moves for a total of ${numberOfStars}
-   stars<br/><a href="#" onclick="startGame(); return false;">Play Again</a>`;
+  paragraph.innerHTML = `Congratulations you've won! It took you ${mins}m ${secs}s
+  with ${counter} moves for a total of ${numberOfStars}
+  stars<br/><a href="#" onclick="startGame(); return false;">Play Again</a>`;
   container.setAttribute('style', 'transform: rotateY(360deg); transition: .5s;');
   setTimeout(function() {
-    container.classList.toggle("hide");
-    paragraph.setAttribute('style', 'z-index: 1;');
     document.body.appendChild(paragraph);
+    paragraph.setAttribute('style', 'z-index: 1;');
   }, 1000);
 }
 
