@@ -1,5 +1,5 @@
 /*
- * Create a list that holds all of your cards
+ * Declaration of variables
  */
 const deck = document.querySelector(".deck");
 const stars = document.querySelector(".stars");
@@ -18,12 +18,9 @@ let moveCounter = 0;
 let cards = [];
 let startTimer;
 let seconds = 0;
-/*
-* Display the cards on the page
-*   - shuffle the list of cards using the provided "shuffle" method below
-*   - loop through each card and create its HTML
-*   - add each card's HTML to the page
-*/
+
+/* startGame() function add cards to the deck, shuffles the deck, and displays the
+ cards on the page */
 
 function startGame() {
   clearInterval(startTimer);
@@ -69,17 +66,9 @@ function shuffle(array) {
 
 startGame();
 
-/*
-* set up the event listener for a card. If a card is clicked:
-*  - display the card's symbol (put this functionality in another function that you call from this one)
-*  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
-*  - if the list already has another card, check to see if the two cards match
-*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
-*    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
-*    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
-*    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
-*/
-
+/* Once a card is clicked it starts the timer, flips the cards, and determines
+   whether cards are matched or unmatched. If all cards match the timer is stopped
+   and the final score is shown in the modal */
 function cardClicked(evt) {
   if (seconds === 0) {
     startTimer = setInterval(function() {
@@ -115,6 +104,7 @@ function addCardToOpenList(evt) {
  }
 }
 
+//Sets the CSS if cards match
 function matchCards(openList) {
  openList[0].classList.remove("open", "show");
  openList[0].classList.add("match");
@@ -124,6 +114,7 @@ function matchCards(openList) {
   }, 501);
 }
 
+//Sets the CSS if cards do not match
 function hideCards(openList) {
  openList[0].style.background = "#e40242";
  openList[1].style.background = "#e40242";
@@ -135,10 +126,12 @@ function hideCards(openList) {
  }, 700);
 }
 
+//Displays the number of moves the player has taken. 2 card clicks = 1 move
 function displayMoves(counter) {
   numberOfMoves.textContent = counter;
 }
 
+//Removes (actually hides) stars as the number of moves increases
 function updateStars() {
   if (moveCounter === 17) {
     stars.children[0].style.visibility = 'hidden';
@@ -148,6 +141,8 @@ function updateStars() {
   }
 }
 
+/* Sets up the modal to display all the winner information
+(time taken to match all cards, number of stars, number of moves) */
 function finalScore(counter) {
   let numberOfStars = stars.childElementCount;
   if (counter > 15) {
