@@ -13,6 +13,6 @@ Each turn:
 
 The game ends once all cards have been correctly matched.
 
-## Depencies
+## Dependencies
 
 Make sure you have an up-to-date Internet browser (Chrome, FF, IE).
