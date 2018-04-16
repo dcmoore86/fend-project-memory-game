@@ -13,40 +13,30 @@ const numberOfMoves = document.querySelector(".moves");
 const container = document.querySelector(".container");
 const timer = document.querySelector(".timer");
 let paragraph = document.createElement("p");
+let clicks = 0;
 let openList = [];
 let moveCounter = 0;
 let cards = [];
-let startTimer;
+let startTimer = null;
 let seconds = 0;
 
 /* startGame() function add cards to the deck, shuffles the deck, and displays the
  cards on the page */
 
 function startGame() {
-  clearInterval(startTimer);
-  paragraph.setAttribute('style', 'z-index: -1;');
-  moveCounter = 0;
-  seconds = 0;
-  cards = [];
-  openList = [];
-  deck.innerHTML = "";
-  timer.innerHTML = "";
-  numberOfMoves.innerHTML = moveCounter;
-  stars.children[0].removeAttribute("style");
-  stars.children[1].removeAttribute("style");
-  for (let i = 0; i < symbols.length; i++) {
+  symbols.forEach(function(symbol) {
     const listItem = document.createElement('li');
-    const symbol = document.createElement('i');
+    const symbol_tag = document.createElement('i');
     listItem.className = 'card';
-    symbol.className = symbols[i];
-    listItem.appendChild(symbol);
+    symbol_tag.className = symbol;
+    listItem.appendChild(symbol_tag);
     cards.push(listItem);
-  }
+  });
 
   const shuffledCards = shuffle(cards);
-  for (let i = 0; i < shuffledCards.length; i++) {
-    fragment.appendChild(shuffledCards[i]);
-  }
+  shuffledCards.forEach(function(card) {
+    fragment.appendChild(card);
+  });
   deck.appendChild(fragment);
 }
 
@@ -64,20 +54,18 @@ function shuffle(array) {
   return array;
 }
 
-startGame();
-
 /* Once a card is clicked it starts the timer, flips the cards, and determines
    whether cards are matched or unmatched. If all cards match the timer is stopped
    and the final score is shown in the modal */
 function cardClicked(evt) {
-  if (seconds === 0) {
+  ++clicks;
+  if (seconds === 0 && clicks === 1) {
     startTimer = setInterval(function() {
       timer.innerHTML = ++seconds;
     }, 1000);
   }
   openCard(evt);
   updateStars();
-  console.log(document.getElementsByClassName("match").length + " " + deck.childElementCount);
   if (document.getElementsByClassName("match").length + 1 === deck.childElementCount) {
     clearInterval(startTimer);
     finalScore(moveCounter);
@@ -133,7 +121,7 @@ function displayMoves(counter) {
 
 //Removes (actually hides) stars as the number of moves increases
 function updateStars() {
-  if (moveCounter === 17) {
+  if (moveCounter === 16) {
     stars.children[0].style.visibility = 'hidden';
   }
   if (moveCounter === 23) {
@@ -154,9 +142,9 @@ function finalScore(counter) {
   mins = Math.floor(seconds/60);
   secs = seconds % 60;
   paragraph = document.createElement("p");
-  paragraph.innerHTML = `Congratulations you've won! It took you ${mins}m ${secs}s
-  with ${counter} moves for a total of ${numberOfStars}
-  stars<br/><a href="#" onclick="startGame(); return false;">Play Again</a>`;
+  paragraph.innerHTML = `Congratulations you've won! It took you <strong>${mins}m ${secs}s</strong>
+  with <strong>${counter} moves</strong> for a total of <strong>${numberOfStars}
+  stars</strong><br/><a href="#" onclick="restartGame(); return false;">Play Again</a>`;
   container.setAttribute('style', 'transform: rotateY(360deg); transition: .5s;');
   setTimeout(function() {
     document.body.appendChild(paragraph);
@@ -164,5 +152,22 @@ function finalScore(counter) {
   }, 1000);
 }
 
+function restartGame() {
+  seconds = 0;
+  clicks = 0;
+  clearInterval(startTimer);
+  paragraph.setAttribute('style', 'z-index: -1;');
+  moveCounter = 0;
+  cards = [];
+  openList = [];
+  deck.innerHTML = "";
+  timer.innerHTML = "";
+  numberOfMoves.innerHTML = "";
+  stars.children[0].removeAttribute("style");
+  stars.children[1].removeAttribute("style");
+  startGame();
+}
+
+startGame();
 deck.addEventListener('click', cardClicked);
-restartButton.addEventListener('click', startGame);
+restartButton.addEventListener('click', restartGame);
