@@ -163,6 +163,7 @@ function restartGame() {
   deck.innerHTML = '';
   timer.innerHTML = '';
   numberOfMoves.innerHTML = '';
+  container.removeAttribute('style');
   stars.children[0].removeAttribute('style');
   stars.children[1].removeAttribute('style');
   startGame();
