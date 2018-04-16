@@ -1,18 +1,18 @@
 /*
  * Declaration of variables
  */
-const deck = document.querySelector(".deck");
-const stars = document.querySelector(".stars");
-const restartButton = document.querySelector(".restart");
-const symbols = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt",
-                 "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle",
-                 "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb",
-                 "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]
+const deck = document.querySelector('.deck');
+const stars = document.querySelector('.stars');
+const restartButton = document.querySelector('.restart');
+const symbols = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-bolt',
+                 'fa fa-cube', 'fa fa-anchor', 'fa fa-leaf', 'fa fa-bicycle',
+                 'fa fa-diamond', 'fa fa-bomb', 'fa fa-leaf', 'fa fa-bomb',
+                 'fa fa-bolt', 'fa fa-bicycle', 'fa fa-paper-plane-o', 'fa fa-cube']
 const fragment = document.createDocumentFragment();
-const numberOfMoves = document.querySelector(".moves");
-const container = document.querySelector(".container");
-const timer = document.querySelector(".timer");
-let paragraph = document.createElement("p");
+const numberOfMoves = document.querySelector('.moves');
+const container = document.querySelector('.container');
+const timer = document.querySelector('.timer');
+let paragraph = document.createElement('p');
 let clicks = 0;
 let openList = [];
 let moveCounter = 0;
@@ -66,15 +66,15 @@ function cardClicked(evt) {
   }
   openCard(evt);
   updateStars();
-  if (document.getElementsByClassName("match").length + 1 === deck.childElementCount) {
+  if (document.getElementsByClassName('match').length + 1 === deck.childElementCount) {
     clearInterval(startTimer);
     finalScore(moveCounter);
   }
 }
 
 function openCard(evt) {
-  if (evt.target.className === "card") {
-    evt.target.classList.add("open", "show")
+  if (evt.target.className === 'card') {
+    evt.target.classList.add('open', 'show')
     addCardToOpenList(evt);
   }
 }
@@ -94,23 +94,23 @@ function addCardToOpenList(evt) {
 
 //Sets the CSS if cards match
 function matchCards(openList) {
- openList[0].classList.remove("open", "show");
- openList[0].classList.add("match");
+ openList[0].classList.remove('open', 'show');
+ openList[0].classList.add('match');
  setTimeout(function() {
-   openList[1].classList.remove("open", "show");
-   openList[1].classList.add("match");
+   openList[1].classList.remove('open', 'show');
+   openList[1].classList.add('match');
   }, 501);
 }
 
 //Sets the CSS if cards do not match
 function hideCards(openList) {
- openList[0].style.background = "#e40242";
- openList[1].style.background = "#e40242";
+ openList[0].style.background = '#e40242';
+ openList[1].style.background = '#e40242';
  setTimeout(function() {
-   openList[0].classList.remove("open", "show");
-   openList[1].classList.remove("open", "show");
-   openList[0].removeAttribute("style");
-   openList[1].removeAttribute("style");
+   openList[0].classList.remove('open', 'show');
+   openList[1].classList.remove('open', 'show');
+   openList[0].removeAttribute('style');
+   openList[1].removeAttribute('style');
  }, 700);
 }
 
@@ -141,10 +141,10 @@ function finalScore(counter) {
   }
   mins = Math.floor(seconds/60);
   secs = seconds % 60;
-  paragraph = document.createElement("p");
+  paragraph = document.createElement('p');
   paragraph.innerHTML = `Congratulations you've won! It took you <strong>${mins}m ${secs}s</strong>
   with <strong>${counter} moves</strong> for a total of <strong>${numberOfStars}
-  stars</strong><br/><a href="#" onclick="restartGame(); return false;">Play Again</a>`;
+  stars</strong><br/><a href='#' onclick='restartGame(); return false;'>Play Again</a>`;
   container.setAttribute('style', 'transform: rotateY(360deg); transition: .5s;');
   setTimeout(function() {
     document.body.appendChild(paragraph);
@@ -160,11 +160,11 @@ function restartGame() {
   moveCounter = 0;
   cards = [];
   openList = [];
-  deck.innerHTML = "";
-  timer.innerHTML = "";
-  numberOfMoves.innerHTML = "";
-  stars.children[0].removeAttribute("style");
-  stars.children[1].removeAttribute("style");
+  deck.innerHTML = '';
+  timer.innerHTML = '';
+  numberOfMoves.innerHTML = '';
+  stars.children[0].removeAttribute('style');
+  stars.children[1].removeAttribute('style');
   startGame();
 }
 
