@@ -15,4 +15,9 @@ The game ends once all cards have been correctly matched.
 
 ## Dependencies
 
-Make sure you have an up-to-date Internet browser (Chrome, FF, IE).
+Make sure you use an up-to-date Internet browser (Chrome, FF, IE).
+
+## Nested Dependencies
+The game utilizes bootstrap and google fonts for styling, which will be loaded automatically once you open the game in your browser.
+- [Bootstrap CSS](https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css)
+- [Google Fonts CSS](https://fonts.googleapis.com/css?family=Coda)
